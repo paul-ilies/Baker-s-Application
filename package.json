@@ -8,7 +8,8 @@
     "server": "nodemon back-end/server.js --exec babel-node -e js",
     "client": "npm start --prefix front-end",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "import": "nodemon back-end/seeder.js --exec babel-node -e js"
+    "import": "nodemon back-end/seeder.js --exec babel-node -e js",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix front-end && npm run build --prefix front-end"
   },
   "author": "Ilies Paul Daniel",
   "license": "ISC",
