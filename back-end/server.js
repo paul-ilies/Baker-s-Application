@@ -1,8 +1,8 @@
 import express from "express";
 import dotenv from "dotenv";
 import path from "path";
-import connectDB from "./db/db";
-import retete from "./route/retete";
+import connectDB from "./db/db.js";
+import retete from "./route/retete.js";
 
 
 

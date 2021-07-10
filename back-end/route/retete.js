@@ -1,6 +1,6 @@
 import express from "express";
 import asyncHandler from "express-async-handler"
-import Retete from '../modele/modelRetete';
+import Retete from '../modele/modelRetete.js';
 
 const router = express.Router();
 

@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import retete from "./retete/retete.json";
-import Retete from './modele/modelRetete';
+import Retete from './modele/modelRetete.js';
 import connectDB from "./db/db";
 
 dotenv.config()
