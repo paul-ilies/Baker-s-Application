@@ -1,4 +1,4 @@
-import mongoose from "mongoose"
+const mongoose = require("mongoose")
 
 const reteteSchema = new mongoose.Schema({
 
@@ -34,5 +34,5 @@ const reteteSchema = new mongoose.Schema({
 
 const Retete = mongoose.model('Retete', reteteSchema)
 
-export default Retete
+module.exports = Retete
 

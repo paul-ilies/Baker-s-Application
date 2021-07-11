@@ -1,6 +1,7 @@
-import express from "express";
-import asyncHandler from "express-async-handler"
-import Retete from '../modele/modelRetete.js';
+const express = require("express")
+const asyncHandler = require("express-async-handler")
+const Retete = require("../modele/modelRetete")
+
 
 const router = express.Router();
 
@@ -21,5 +22,5 @@ router
     }))
 
 
-export default router
+module.exports = router
 

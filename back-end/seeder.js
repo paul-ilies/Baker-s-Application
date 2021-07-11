@@ -1,7 +1,8 @@
-import dotenv from "dotenv";
-import retete from "./retete/retete.json";
-import Retete from './modele/modelRetete.js';
-import connectDB from "./db/db";
+const dotenv = require("dotenv")
+const retete = require("./retete/retete.json")
+const Retete = require("./modele/modelRetete.js")
+const connectDB = require("./db/db")
+
 
 dotenv.config()
 

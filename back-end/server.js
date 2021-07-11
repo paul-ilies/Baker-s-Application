@@ -1,13 +1,16 @@
-import express from "express";
-import dotenv from "dotenv";
-import path from "path";
-import connectDB from "./db/db.js";
-import retete from "./route/retete.js";
+const express = require("express")
+const dotenv = require("dotenv")
+const { connectDB } = require("./db/db")
+const path = require("path");
+const retete = require("./route/retete")
 
 
 
-dotenv.config()
+
+dotenv.config({ path: "../.env" })
 connectDB()
+const PORT = process.env.PORT || 5000;
+
 const app = express()
 app.use(express.json())
 
@@ -20,7 +23,7 @@ app.get("/*", (req, res) => {
 })
 
 
-const PORT = process.env.PORT || 5000;
+
 app.listen(PORT, () => {
     console.log(`Serverul este deschis in portul: ${PORT}`)
 })
