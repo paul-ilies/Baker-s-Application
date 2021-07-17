@@ -14,20 +14,25 @@ const Reteta = ({ match }) => {
 
 
     useEffect(() => {
-        axios.get(`/recipes/${match.params.id}`)
 
-            .then(res => {
-                setReteta(res.data)
-                setTimeout(() => {
-                    setLoading(false)
-                }, 500)
-            })
-            .catch(error => {
-                if (error) {
-                    setLoading(false)
-                    setError(true)
-                }
-            })
+        async function getRecipe() {
+            await axios.get(`/recipes/${match.params.id}`)
+
+                .then(res => {
+                    setReteta(res.data)
+                    setTimeout(() => {
+                        setLoading(false)
+                    }, 500)
+                })
+                .catch(error => {
+                    if (error) {
+                        setLoading(false)
+                        setError(true)
+                    }
+                })
+        }
+        getRecipe()
+
     }, [match.params.id])
 
 

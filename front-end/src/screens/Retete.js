@@ -13,19 +13,23 @@ const Retete = () => {
     const [error, setError] = useState(false)
 
     useEffect(() => {
-        axios.get("/recipes")
-            .then(res => {
-                setRetete(res.data)
-                setTimeout(() => {
-                    setLoading(false)
-                }, 500)
-            })
-            .catch(error => {
-                if (error) {
-                    setLoading(false)
-                    setError(true)
-                }
-            })
+        async function getRecipes() {
+            await axios.get("/recipes")
+                .then(res => {
+                    setRetete(res.data)
+                    setTimeout(() => {
+                        setLoading(false)
+                    }, 500)
+                })
+                .catch(error => {
+                    if (error) {
+                        setLoading(false)
+                        setError(true)
+                    }
+                })
+        }
+        getRecipes()
+
     }, [])
 
 
