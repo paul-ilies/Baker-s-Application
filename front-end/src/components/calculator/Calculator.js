@@ -26,10 +26,13 @@ const Calculator = () => {
           {Object.keys(ingredients).map((name) => {
             return (
               <Form.Group key={name}>
-                <Form.Label>{firstLetterUppercase(name)}</Form.Label>
+                <Form.Label htmlFor={name}>
+                  {firstLetterUppercase(name)}
+                </Form.Label>
                 <Row>
                   <Col lg={4}>
                     <Form.Control
+                      id={name}
                       as="input"
                       type="number"
                       inputMode="numeric"
