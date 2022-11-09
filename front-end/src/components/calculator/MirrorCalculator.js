@@ -1,9 +1,11 @@
-import React from "react";
+import React, { memo } from "react";
 import { Card, Col, Image, ListGroup, Row } from "react-bootstrap";
 import { useCalcGlobalContext } from "../../context/ContextCalculator";
+import { firstLetterUppercase, HIDRATION } from "../../utils/utils";
 
 const MirrorCalculator = () => {
-  const { state: ingredients } = useCalcGlobalContext();
+  const [state] = useCalcGlobalContext();
+  const ingredients = { ...state };
 
   return (
     <Card className="shadow-lg p-3 mb-5  bg-white rounded h-100">
@@ -17,20 +19,19 @@ const MirrorCalculator = () => {
           <Col lg={12}>
             <ListGroup as="ul" variant="flush">
               {Object.keys(ingredients).map((name, index) => {
-                console.log(name);
                 return (
                   <ListGroup.Item
-                    key={index}
+                    key={name}
                     as="li"
                     style={{
-                      color: name === "Hidration" ? "#FF7518" : "black",
-                      fontWeight: name === "Hidration" ? "bold" : "normal",
-                      fontSize: name === "Hidration" ? "1.25rem" : "1rem",
-                      textAlign: name === "Hidration" ? "center" : "left",
+                      color: name === HIDRATION ? "#FF7518" : "black",
+                      fontWeight: name === HIDRATION ? "bold" : "normal",
+                      fontSize: name === HIDRATION ? "1.25rem" : "1rem",
+                      textAlign: name === HIDRATION ? "center" : "left",
                     }}
                   >
-                    <strong>{`${name}:`}</strong>
-                    {name === "Hidration"
+                    <strong>{`${firstLetterUppercase(name)}:`}</strong>
+                    {name === HIDRATION
                       ? ` ${ingredients[name]} %`
                       : ` ${ingredients[name]} g`}
                   </ListGroup.Item>
@@ -54,4 +55,4 @@ const MirrorCalculator = () => {
   );
 };
 
-export default MirrorCalculator;
+export default memo(MirrorCalculator);

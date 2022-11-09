@@ -25,7 +25,7 @@ const faqList = [
 ];
 
 const FAQ = () => {
-  const [faq, setFaq] = useState(faqList);
+  const [faq, setFaq] = useState(() => faqList);
 
   return (
     <div className="my-5">

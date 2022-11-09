@@ -1,11 +1,19 @@
-import React from "react";
+import React, { memo } from "react";
 import { Button, Card, Col, Form, Row } from "react-bootstrap";
 import "./calculator.css";
 import { useCalcGlobalContext } from "../../context/ContextCalculator";
-
+import {
+  defaultState,
+  firstLetterUppercase,
+  GET_VALUES,
+  maxValues,
+  RESET_VALUES,
+  SALT,
+  YEAST,
+} from "../../utils/utils";
 const Calculator = () => {
-  const { state: ingredients, onChange, resetHandle } = useCalcGlobalContext();
-
+  const [state, dispatch] = useCalcGlobalContext();
+  const ingredients = { ...state };
   return (
     <Card className="shadow-lg p-3 mb-5 bg-white rounded h-100">
       <Card.Body>
@@ -15,10 +23,10 @@ const Calculator = () => {
           </h3>
         </Card.Title>
         <Form>
-          {Object.keys(ingredients).map((name, index) => {
+          {Object.keys(ingredients).map((name) => {
             return (
-              <Form.Group key={index}>
-                <Form.Label>{name}</Form.Label>
+              <Form.Group key={name}>
+                <Form.Label>{firstLetterUppercase(name)}</Form.Label>
                 <Row>
                   <Col lg={4}>
                     <Form.Control
@@ -26,50 +34,34 @@ const Calculator = () => {
                       type="number"
                       inputMode="numeric"
                       min="0"
-                      max={
-                        name === "Flour"
-                          ? "2000"
-                          : name === "Water"
-                          ? "1600"
-                          : name === "Hidration"
-                          ? "80"
-                          : name === "Yeast"
-                          ? "40"
-                          : name === "Salt"
-                          ? "40"
-                          : "0"
-                      }
-                      readOnly={
-                        name === "Yeast" || name === "Salt" ? true : false
-                      }
+                      max={maxValues(name)}
+                      readOnly={name === YEAST || name === SALT ? true : false}
                       name={name}
-                      value={ingredients[name]}
-                      onChange={onChange}
+                      value={
+                        ingredients[name] > +maxValues(name)
+                          ? +maxValues(name, ingredients[name])
+                          : ingredients[name]
+                      }
+                      onChange={(event) =>
+                        dispatch({ type: GET_VALUES, payload: event })
+                      }
                     />
                   </Col>
                   <Col className="my-auto">
                     <Form.Control
                       type="range"
                       min="0"
-                      max={
-                        name === "Flour"
-                          ? "2000"
-                          : name === "Water"
-                          ? "1600"
-                          : name === "Hidration"
-                          ? "80"
-                          : name === "Yeast"
-                          ? "40"
-                          : name === "Salt"
-                          ? "40"
-                          : "0"
-                      }
-                      disabled={
-                        name === "Yeast" || name === "Salt" ? true : false
-                      }
+                      max={maxValues(name)}
+                      disabled={name === YEAST || name === SALT ? true : false}
                       name={name}
-                      value={ingredients[name]}
-                      onChange={onChange}
+                      value={
+                        ingredients[name] > +maxValues(name)
+                          ? +maxValues(name)
+                          : ingredients[name]
+                      }
+                      onChange={(event) =>
+                        dispatch({ type: GET_VALUES, payload: event })
+                      }
                     />
                   </Col>
                 </Row>
@@ -83,7 +75,12 @@ const Calculator = () => {
                 size="lg"
                 block
                 className="rounded"
-                onClick={resetHandle}
+                onClick={() =>
+                  dispatch({
+                    type: RESET_VALUES,
+                    payload: defaultState,
+                  })
+                }
               >
                 Clear Selections
               </Button>
@@ -95,4 +92,4 @@ const Calculator = () => {
   );
 };
 
-export default Calculator;
+export default memo(Calculator);

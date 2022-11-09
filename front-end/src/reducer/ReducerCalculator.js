@@ -1,36 +1,53 @@
-export const CalcReducer = (state, action) => {
+import { GET_VALUES, RESET_VALUES } from "../utils/utils";
+
+export const calcReducer = (state, action) => {
   const { type, payload } = action;
 
-  if (type === "GET_QUANTITY") {
+  if (type === GET_VALUES) {
     const { name, value } = payload.target;
-    const getValues = { [name]: value };
-    if (getValues.Flour >= 0) {
+    const getValues = { [name]: parseInt(value) };
+    const { flour, water, hidration } = getValues;
+    const normalizeInputs = {
+      flour: flour > 2000 ? 2000 : flour,
+      water: water > 1600 ? 1600 : water,
+      hidration: hidration > 80 ? 80 : hidration,
+    };
+
+    if (normalizeInputs.flour >= 0) {
       return {
         ...state,
-        Flour: parseInt(getValues.Flour).toFixed(),
-        Water: parseInt((getValues.Flour * state.Hidration) / 100).toFixed(),
-        Salt: parseInt(getValues.Flour * 0.02).toFixed(),
-        Yeast: parseInt(getValues.Flour * 0.02).toFixed(),
-        Hidration: state.Hidration,
+        flour: normalizeInputs.flour,
+        water:
+          state.water ||
+          Math.round((normalizeInputs.flour * state.hidration) / 100),
+        salt: Math.round(normalizeInputs.flour * 0.02),
+        yeast: Math.round(normalizeInputs.flour * 0.02),
+        hidration:
+          state.flour > 0 || normalizeInputs.flour > 0
+            ? Math.round((state.water / normalizeInputs.flour) * 100)
+            : 0,
       };
     }
-    if (getValues.Water >= 0) {
+    if (normalizeInputs.water >= 0) {
       return {
         ...state,
-        Water: getValues.Water,
-        Hidration: parseInt((getValues.Water / state.Flour) * 100).toFixed(0),
+        water: normalizeInputs.water,
+        hidration:
+          state.flour > 0 || normalizeInputs.flour > 0
+            ? Math.round((normalizeInputs.water / state.flour) * 100)
+            : 0,
       };
     }
-    if (getValues.Hidration >= 0) {
+    if (normalizeInputs.hidration >= 0) {
       return {
         ...state,
-        Hidration: getValues.Hidration,
-        Water: parseInt((state.Flour * getValues.Hidration) / 100).toFixed(0),
+        hidration: normalizeInputs.hidration,
+        water: Math.round((state.flour * normalizeInputs.hidration) / 100),
       };
     }
   }
 
-  if (type === "RESET_FIELDS") {
+  if (type === RESET_VALUES) {
     return { ...state, ...payload };
   }
   return { ...state };
