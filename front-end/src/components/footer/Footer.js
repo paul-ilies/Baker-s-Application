@@ -2,14 +2,14 @@ import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 
 const Footer = () => {
-  const currentDate = new Date().getFullYear();
+  const currentYear = new Date().getFullYear();
 
   return (
     <footer>
       <Container>
         <Row>
           <Col className="text-center py-3">
-            Copyright &copy; <strong>Ilies Paul Daniel</strong> {currentDate}
+            Copyright &copy; <strong>Ilies Paul Daniel</strong> {currentYear}
           </Col>
         </Row>
       </Container>
