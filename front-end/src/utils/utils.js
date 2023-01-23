@@ -5,6 +5,9 @@ export const YEAST = "yeast";
 export const HIDRATION = "hidration";
 export const RESET_VALUES = "RESET_VALUES";
 export const GET_VALUES = "GET_VALUES";
+export const MAX_FLOUR = 2000;
+export const MAX_WATER = 1600;
+export const MAX_HIDRATION = 80;
 
 export const defaultState = {
   flour: 0,
@@ -15,19 +18,16 @@ export const defaultState = {
 };
 
 export const firstLetterUppercase = (name) => {
-  const newArr = name.split("");
-  return newArr[0].toUpperCase() + newArr.slice(1).join("");
+  return name.charAt(0).toUpperCase() + name.substring(1);
 };
 
-export const maxValues = (name, value) =>
-  name === FLOUR
-    ? "2000"
-    : name === WATER
-    ? "1600"
-    : name === HIDRATION
-    ? value
-    : name === YEAST
-    ? "40"
-    : name === SALT
-    ? "40"
-    : "0";
+export const maxValues = (name, value) => {
+  const maxValues = {
+    [FLOUR]: 2000,
+    [WATER]: 1600,
+    [HIDRATION]: value,
+    [YEAST]: 40,
+    [SALT]: 40,
+  };
+  return maxValues[name] || 0;
+};

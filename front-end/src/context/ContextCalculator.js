@@ -1,14 +1,16 @@
-import React, { useContext, useReducer } from "react";
+import React, { useContext, useReducer, useMemo } from "react";
 import { calcReducer } from "../reducer/ReducerCalculator";
 import { defaultState } from "../utils/utils";
 
 const CalcContext = React.createContext();
 
-export const CalcProvider = ({ children }) => {
+export const CalcProvider = (props) => {
   const [state, dispatch] = useReducer(calcReducer, defaultState);
-  const value = [state, dispatch];
+  const value = useMemo(() => {
+    return [state, dispatch];
+  }, [state]);
 
-  return <CalcContext.Provider value={value}>{children}</CalcContext.Provider>;
+  return <CalcContext.Provider value={value} {...props} />;
 };
 export const useCalcGlobalContext = () => {
   const context = useContext(CalcContext);

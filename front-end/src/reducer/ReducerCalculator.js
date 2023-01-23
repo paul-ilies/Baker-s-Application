@@ -1,29 +1,34 @@
-import { GET_VALUES, RESET_VALUES } from "../utils/utils";
+import {
+  GET_VALUES,
+  RESET_VALUES,
+  MAX_FLOUR,
+  MAX_WATER,
+  MAX_HIDRATION,
+} from "../utils/utils";
 
 export const calcReducer = (state, action) => {
   const { type, payload } = action;
 
   if (type === GET_VALUES) {
+    console.log(payload);
     const { name, value } = payload.target;
     const getValues = { [name]: parseInt(value) };
     const { flour, water, hidration } = getValues;
     const normalizeInputs = {
-      flour: flour > 2000 ? 2000 : flour,
-      water: water > 1600 ? 1600 : water,
-      hidration: hidration > 80 ? 80 : hidration,
+      flour: Math.min(flour, MAX_FLOUR),
+      water: Math.min(water, MAX_WATER),
+      hidration: Math.min(hidration, MAX_HIDRATION),
     };
 
     if (normalizeInputs.flour >= 0) {
       return {
         ...state,
         flour: normalizeInputs.flour,
-        water:
-          state.water ||
-          Math.round((normalizeInputs.flour * state.hidration) / 100),
+        water: Math.round((normalizeInputs.flour * state.hidration) / 100),
         salt: Math.round(normalizeInputs.flour * 0.02),
         yeast: Math.round(normalizeInputs.flour * 0.02),
         hidration:
-          state.flour > 0 || normalizeInputs.flour > 0
+          state.flour > 0
             ? Math.round((state.water / normalizeInputs.flour) * 100)
             : 0,
       };
@@ -33,7 +38,7 @@ export const calcReducer = (state, action) => {
         ...state,
         water: normalizeInputs.water,
         hidration:
-          state.flour > 0 || normalizeInputs.flour > 0
+          state.flour > 0
             ? Math.round((normalizeInputs.water / state.flour) * 100)
             : 0,
       };

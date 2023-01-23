@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { memo, useCallback } from "react";
 import { Button, Card, Col, Form, Row } from "react-bootstrap";
 import "./calculator.css";
 import { useCalcGlobalContext } from "../../context/ContextCalculator";
@@ -12,8 +12,22 @@ import {
   YEAST,
 } from "../../utils/utils";
 const Calculator = () => {
-  const [state, dispatch] = useCalcGlobalContext();
-  const ingredients = { ...state };
+  const [ingredients, dispatch] = useCalcGlobalContext();
+
+  const onChangeInputValue = useCallback(
+    (event) => {
+      dispatch({ type: GET_VALUES, payload: event });
+    },
+    [dispatch]
+  );
+
+  const resetValues = useCallback(() => {
+    dispatch({
+      type: RESET_VALUES,
+      payload: defaultState,
+    });
+  }, [dispatch]);
+
   return (
     <Card className="shadow-lg p-3 mb-5 bg-white rounded h-100">
       <Card.Body>
@@ -45,9 +59,7 @@ const Calculator = () => {
                           ? +maxValues(name, ingredients[name])
                           : ingredients[name]
                       }
-                      onChange={(event) =>
-                        dispatch({ type: GET_VALUES, payload: event })
-                      }
+                      onChange={onChangeInputValue}
                     />
                   </Col>
                   <Col className="my-auto">
@@ -62,9 +74,7 @@ const Calculator = () => {
                           ? +maxValues(name)
                           : ingredients[name]
                       }
-                      onChange={(event) =>
-                        dispatch({ type: GET_VALUES, payload: event })
-                      }
+                      onChange={onChangeInputValue}
                     />
                   </Col>
                 </Row>
@@ -78,12 +88,7 @@ const Calculator = () => {
                 size="lg"
                 block
                 className="rounded"
-                onClick={() =>
-                  dispatch({
-                    type: RESET_VALUES,
-                    payload: defaultState,
-                  })
-                }
+                onClick={resetValues}
               >
                 Clear Selections
               </Button>

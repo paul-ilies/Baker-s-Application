@@ -24,16 +24,22 @@ const faqList = [
   },
 ];
 
+const Icon = () => {
+  return (
+    <IconContext.Provider value={{ color: "#FF7518" }}>
+      <FaQuestion />
+    </IconContext.Provider>
+  );
+};
+
 const FAQ = () => {
-  const [faq, setFaq] = useState(() => faqList);
+  const [faq] = useState(() => faqList);
 
   return (
     <div className="my-5">
       <h1 className="my-5 text-center">
         <strong>Frequently Asked Questions </strong>
-        <IconContext.Provider value={{ color: "#FF7518" }}>
-          <FaQuestion />
-        </IconContext.Provider>
+        <Icon />
       </h1>
       {faq.map((el) => {
         return (
